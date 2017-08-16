@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput} from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 
 
@@ -11,19 +11,37 @@ export default class FlightInput extends Component {
     {
       flight: '',
       date:'',
-      location: 'hi'
     };
+    this.handleDateChange=this.handleDateChange.bind(this);
+    this.handleNumChange=this.handleNumChange.bind(this)
   }
+
+  handleNumChange(value) {
+  this.setState({
+    flightLet: value.substring(0, 2),
+    flightNum: value.substring(2),
+  })}
+
+
+  handleDateChange(value) {
+    let dateArray = value.split('/')
+    this.setState({
+      date: value,
+      month: dateArray[0],
+      day: dateArray[1],
+      year: dateArray[2]
+    })}
+
   render() {
     return (
       <View style={styles.container}>
         <Text>Enter the final flight number for the person that you are picking up</Text>
         <TextInput
-          style={{height: 40, width: 120, padding: 10, borderColor: 'gray', borderWidth: 2}}
-          onChangeText={(flight) => this.setState({flight})}
+          style={{height: 40, width: 200, padding: 10, borderColor: 'gray', borderWidth: 2}}
+          onChangeText={(flight) => this.handleNumChange(flight)}
           placeholder ="Flight Number"/>
-          <DatePicker
-          style={{width: 200}}
+        <DatePicker
+          style={{width: 250}}
           date={this.state.date}
           mode="date"
           placeholder="select date"
@@ -41,12 +59,19 @@ export default class FlightInput extends Component {
               marginRight: 36
             }
           }}
-          onDateChange={
-            (date) => {this.setState({date: date})
-          }}
+          onDateChange={(date) => {this.handleDateChange(date)}}
           />
-        <Text>Your location</Text>
+        <Text>Your Location</Text>
         <Text>Manually enter Address</Text>
+        <TextInput
+          style={{height: 40, width: 200, padding: 10, borderColor: 'gray', borderWidth: 2}}
+          onChangeText={(location) => this.setState({location})}
+          placeholder ="Address"/>
+        <Button
+          onPress={() => {this.props.flight(this.state.flightLet, this.state.flightNum, this.state.year, this.state.month, this.state.day, this.state.location)}}
+          title="Submit"
+          color="#841584"
+        />
       </View>
     );
   }
