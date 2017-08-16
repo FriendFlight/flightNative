@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import Login from './components/Login/Login';
 import FlightInput from './components/FlightInput/FlightInput';
 import NotificationPref from './components/NotificationPref/NotificationPref';
@@ -13,8 +13,20 @@ export default class App extends Component {
       user:'Austin',
       notification:'yes',
       drive:'yes',
-      display:'none'
+      movies:[]
     }
+    this.gmovies=this.gmovies.bind(this);
+  }
+  gmovies()
+  {
+    fetch('https://facebook.github.io/react-native/movies.json')
+    .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson.movies[0].title);
+      })
+    .catch((error) => {
+        console.log(error);
+    });
   }
 
   render() {
@@ -25,6 +37,13 @@ export default class App extends Component {
       <View style={styles.container}>
         <Text>RideMindur</Text>
         <Login />
+        <Button
+          onPress={this.gmovies}
+          title="Learn More"
+          color="#841584"
+          accessibilityLabel="Learn more about this purple button"
+        />
+        <Text>{this.state.movies}</Text>
         {this.state.user?flightInput:null}
         {this.state.notification?notificationPref:null}
         {this.state.drive?driveDisplay:null}

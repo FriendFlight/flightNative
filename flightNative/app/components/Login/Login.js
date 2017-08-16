@@ -2,10 +2,19 @@ import React, {Component} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default class Login extends Component {
+  constructor()
+  {
+    super();
+    this.state={
+      user:''
+    }
+  }
   render() {
+    const login=(<Text>Login</Text>);
+    const logout=(<Text>Logout</Text>);
     return (
       <View style={styles.container}>
-        <Text>Login</Text>
+        {this.state.user?logout:login}
       </View>
     );
   }
