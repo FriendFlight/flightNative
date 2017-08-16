@@ -27,7 +27,7 @@ export default class App extends Component {
         if((responseJson.directions.routes[0].legs[0].distance.value / 1760) > 100)
         {
           this.setState({index:1})
-          fetch(`/api/new-location/${location}/${res.data.info[0].appendix.airports[1].name}`)
+          fetch(`http://192.168.3.74:3001/api/new-location/${location}/${responseJson.info[0].appendix.airports[1].name}`)
           .then((res) => res.json())
           .then((resJson) =>
           {
@@ -38,7 +38,7 @@ export default class App extends Component {
           })
       }})
       .catch((error) => {
-        console.error("flightb", error);
+        console.error("flightbug", error);
       });
   }
 
@@ -47,9 +47,9 @@ export default class App extends Component {
     const driveDisplay=(<DriveDisplay flight={this.state.flight} index={this.state.index}/>)
     return (
       <View style={styles.container}>
+        <Text>Logo</Text>
         <Text>RooMinder</Text>
         <Login />
-        <Text>{this.state.movies}</Text>
         {this.state.user?flightInput:null}
         {this.state.flight?driveDisplay:null}
       </View>
