@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button, Image } from 'react-native';
 import config from './config.js';
 
 import Login from './components/Login/Login';
@@ -11,7 +11,7 @@ export default class App extends Component {
   {
     super();
     this.state={
-      user:'Austin',
+      user:'',
       notification:'yes',
       drive:'yes',
       index:0
@@ -43,15 +43,26 @@ export default class App extends Component {
   }
 
   render() {
-    const flightInput=(<FlightInput flight={this.getFlight}/>)
-    const driveDisplay=(<DriveDisplay flight={this.state.flight} index={this.state.index}/>)
+    const login=(<Login />)
+    const flightInput=(<View style={{flex:1, alignItems:'center'}}>
+                        <Image
+                          style={{width: 150, height: 150}}
+                          source={require('./kangaroo.png')}
+                        />
+                        <Text>RooMinder</Text>
+                        <FlightInput flight={this.getFlight} />
+                      </View>);
+    const driveDisplay=(<DriveDisplay flight={this.state.flight} index={this.state.index} />);
+    const map=(<Map flight={this.state.flight} />);
     return (
       <View style={styles.container}>
-        <Text>Logo</Text>
-        <Text>RooMinder</Text>
-        <Login />
-        {this.state.user?flightInput:null}
-        {this.state.flight?driveDisplay:null}
+        <ScrollView>
+          <View style={{padding:10, alignItems:'center', justifyContent:'center'}}>
+            {this.state.user?null:login}
+            {this.state.user?flightInput:null}
+            {this.state.flight?driveDisplay:null}
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -59,9 +70,8 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    flex:1,
     justifyContent: 'center',
+    paddingTop:40,
   },
 });
